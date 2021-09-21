@@ -3,14 +3,14 @@
 Nama                : Tsania Az Zahra <br/>
 NRP                 : 05111940000032 <br/>
 Kelas               : Grafika Komputer - D <br/>
-Keterangan Gambar   : Nampan
+Keterangan Gambar   : Irus
 
 
 ### Depan Atas
-![alt text](https://github.com/cg2021d/tugas-1-tsaniaaz/blob/main/depan-atas.jpg)
+![alt text](https://github.com/cg2021d/tugas-1-tsaniaaz/blob/main/depanatas.jpg)
 ### Belakang Atas
-![alt text](https://github.com/cg2021d/tugas-1-tsaniaaz/blob/main/belakang-atas.jpg)
+![alt text](https://github.com/cg2021d/tugas-1-tsaniaaz/blob/main/belakangatas.jpg)
 ### Kanan Atas
-![alt text](https://github.com/cg2021d/tugas-1-tsaniaaz/blob/main/kanan-atas.jpg)
+![alt text](https://github.com/cg2021d/tugas-1-tsaniaaz/blob/main/kananatas.jpg)
 ### Kiri Atas
-![alt text](https://github.com/cg2021d/tugas-1-tsaniaaz/blob/main/kiri-atas.jpg)
+![alt text](https://github.com/cg2021d/tugas-1-tsaniaaz/blob/main/kiriatas.jpg)
