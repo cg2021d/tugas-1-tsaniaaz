@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,700&display=swap');
+
+body{
+    font-family: 'Playfair Display',serif;
+    background-color: #415a77;
+}
+
+canvas{
+    margin:20px auto auto auto;
+    border-radius: 30px;
+}
+
+div h1{
+    position: fixed;
+    margin: 20px 400px;
+    font-size: 50px;
+    color:transparent;
+    -webkit-text-stroke: #415a77 2px;
+    text-shadow:2px 4px 1px #90a8c7;
+}
