@@ -5,6 +5,11 @@ NRP                 : 05111940000032 <br/>
 Kelas               : Grafika Komputer - D <br/>
 Keterangan Gambar   : Irus
 
+### Static and Dynamic Result.
+- Depan Atas dan Kanan Atas -
+![alt text](https://github.com/cg2021d/tugas-1-tsaniaaz/blob/main/demo.gif) 
+
+
 
 ### Depan Atas
 ![alt text](https://github.com/cg2021d/tugas-1-tsaniaaz/blob/main/depanatas.jpg)
