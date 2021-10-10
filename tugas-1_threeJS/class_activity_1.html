@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Class Activity</title>
+    <script src="js/three.min.js"></script>
+    <style>
+          body{
+              margin:0;    
+          }  
+    </style>
+  </head>
+  <body></body>
+</html>
+
+<script>
+  // ========== Membuat Objek dengan Materials dan Geometri Beragam Dengan Rotasi dan Translasi ==============
+  let scene, camera, renderer;
+  let cube, line, ball, torusKnot; // set up the environment - // initiallize scene, camera, objects and renderer
+  var dxPerFrame = 0.02;
+  var dyPerFrame = 0.02; // how to move in a single frame
+  let createCube = function () {
+    const geometry = new THREE.BoxGeometry(0.6, 0.6, 0.6);
+    const material = new THREE.MeshBasicMaterial(
+        {
+                color: "darkred", 
+        }
+            );
+    cube = new THREE.Mesh(geometry, material);
+    cube.position.set(0,0,1);
+    scene.add(cube);
+  };
+
+  let createTorus = function(){
+        const geometry1 = new THREE.TorusGeometry( 0.4, 0.1, 10, 100 );
+        const material1 = new THREE.MeshBasicMaterial( { color: "darkseagreen" } );
+        const wireframe = new THREE.WireframeGeometry( geometry1 );
+
+        line = new THREE.LineSegments( wireframe );
+        line.material.depthTest = false;
+        line.material.opacity = 0.3;
+        line.material.transparent = true;
+        line.position.set(1,0,0);
+        scene.add(line);
+  }
+
+  let createBall = function(){
+        const geometry2 = new THREE.SphereGeometry( 0.4, 100, 100 );
+        const material2 = new THREE.MeshNormalMaterial();
+        ball = new THREE.Mesh( geometry2, material2 );
+        ball.position.set(0,1,0);
+        scene.add( ball );
+  }
+  
+  let createTorusKnot = function(){
+        const geometry3 = new THREE.TorusKnotGeometry( 0.4, 0.1, 100, 3 );
+        const material3 = new THREE.MeshPhongMaterial(
+                {
+                        color: "grey", 
+                        shininess : 100,
+                        emissive : 0.5,
+                        metalness : 1
+                }
+                    );
+        torusKnot = new THREE.Mesh( geometry3, material3 );
+        torusKnot.position.set(-1,0,0);
+        scene.add( torusKnot );
+  }
+
+  let init = function () {
+    // 1. create the scene
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color("grey"); 
+    var light = new THREE.DirectionalLight( 0xffffff );
+        light.position.set( 0, 1, 1 ).normalize();
+        scene.add(light);
+    // 2. create an locate the camera
+    scene.add(new THREE.GridHelper(4,12,0x888888,0x444444));
+    camera = new THREE.PerspectiveCamera(
+      30,
+      window.innerWidth / window.innerHeight,
+      1,
+      1500
+    );
+
+    // 3. create an locate the object on the scene
+    camera.position.set(0,3,5);
+    camera.lookAt(0,0,0);
+    createCube(); 
+    createTorus();
+    createBall();
+    createTorusKnot();
+    
+    // 4. create the renderer
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    document.body.appendChild(renderer.domElement);
+  };
+
+  init(); // main animation loop - calls 50-60 in a second.
+
+  let mainLoop = function () {
+    //console.log("Hello");
+    requestAnimationFrame(mainLoop);
+
+    cube.position.x += dxPerFrame; // move cube
+    ball.position.x += dxPerFrame;
+    if(cube.position.x >  2 || ball.position.x > 2) dxPerFrame = -0.02; // if we're too far right, move towards the left
+    if(cube.position.x < -2 || ball.position.x < -2) dxPerFrame =  0.02; // if we're too far left, move towards the right again
+
+    ball.rotation.x += 0.02;
+    ball.rotation.y += 0.02;
+    ball.rotation.z += 0.02;
+
+    cube.rotation.x += 0.02;
+    cube.rotation.y += 0.02;
+    cube.rotation.z += 0.02;
+
+    //line.position.z += dxPerFrame; // move cube
+    torusKnot.position.z += dyPerFrame;
+    line.position.z += dyPerFrame;
+    if(line.position.z >  2 || torusKnot.position.z >  2) dyPerFrame = -0.02; // if we're too far up, move towards the down
+    if(line.position.z < -2 || torusKnot.position.z <  -2) dyPerFrame =  0.02; // if we're too far down, move towards the upside again
+
+    line.rotation.x += 0.02;
+    line.rotation.y += 0.02;
+    line.rotation.z += 0.02;
+
+    torusKnot.rotation.x += 0.02;
+    torusKnot.rotation.y += 0.02;
+    torusKnot.rotation.z += 0.02;
+    
+
+    renderer.render(scene, camera);
+  
+}; ///////////////////////////////////////////////
+  mainLoop();
+</script>

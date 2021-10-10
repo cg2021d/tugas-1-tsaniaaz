@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Ambient_Light</title>
+    <script src="js/three.min.js"></script>
+    <style>
+          body{
+              margin:0;    
+          }  
+    </style>
+  </head>
+  <body></body>
+</html>
+
+<script>
+  // ========== Contoh ambient_Light ==============
+  let scene, camera, renderer, lighthelper;
+  let cone, ambientLight, targetObject; // set up the environment - // initiallize scene, camera, objects and renderer
+  
+  let createCone = function () {
+    var properties = {
+        specular: 0xa9fcff,
+        color: "skyblue",
+        emissive: 0x006063,
+        shininess: 20
+    }
+    const geometry = new THREE.ConeGeometry( 0.5, 1, 32 );
+    const material = new THREE.MeshPhongMaterial(properties);
+    cone = new THREE.Mesh( geometry, material );
+    cone.name = 'cone';
+    cone.castShadow = true;
+
+    scene.add( cone );
+  };
+
+  let init = function () {
+    // 1. create the scene and light
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color("black"); 
+
+    ambientLight = new THREE.AmbientLight( 0x404040, 1 ); // soft white light
+    scene.add( ambientLight ); // has no direction. enlight all surface.
+    
+
+    // 2. create an locate the camera
+    scene.add(new THREE.GridHelper(4,12,"white","grey"));
+    camera = new THREE.PerspectiveCamera(
+      30,
+      window.innerWidth / window.innerHeight,
+      1,
+      1500
+    );
+    camera.position.set(0,2,5);
+    camera.lookAt(scene.position);
+
+    // 3. create an locate the object on the scene
+    
+    createCone(); 
+    cone.position.y += 0.5;
+    
+    // 4. create the renderer
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    document.body.appendChild(renderer.domElement);
+  };
+
+  init(); // main animation loop - calls 50-60 in a second.
+  renderer.render(scene, camera);
+
+</script>
