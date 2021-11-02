@@ -1,0 +1,167 @@
+<html>
+  <head>
+    <title>Tugas</title>
+  </head>
+  <body style="margin: 0"></body>
+</html>
+
+<script type="module">
+  import * as THREE from "https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js";
+  import { OrbitControls } from "https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js";
+  import { OBJLoader } from "https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/OBJLoader.js";
+  import { Reflector } from "https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/objects/Reflector.js";
+  let scene, camera, renderer, sphere, target, texture, controls, textured, sphereCamera;
+  let ADD = 0.005,
+    theta = 0;
+
+  function makeInstance(geometry, color, x) {
+    const material = new THREE.MeshPhongMaterial({ color });
+
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    cube.position.x = x;
+
+    return cube;
+  }
+
+  function makeTextured(geometry, img, x) {
+    texture = new THREE.TextureLoader().load(img);
+
+    const material = new THREE.MeshBasicMaterial({
+      map: texture,
+      side: THREE.DoubleSide,
+    });
+    const spherical = new THREE.Mesh(geometry, material);
+    scene.add(spherical);
+
+    spherical.position.x = x;
+
+    return spherical;
+  }
+
+  let realisticReflective = function(){
+    let sphereMaterial = new THREE.MeshBasicMaterial();
+    let sphereGeo =  new THREE.SphereGeometry(10, 50, 50);
+    let mirrorSphere = new THREE.Mesh(sphereGeo, sphereMaterial);
+    mirrorSphere.position.set(-3, -25, 8);
+    scene.add(mirrorSphere);
+  }
+
+  let createGeometry = function () {
+    texture = new THREE.TextureLoader().load("img/pic18.jpg");
+
+    let material = new THREE.MeshBasicMaterial({
+      map: texture,
+      side: THREE.DoubleSide,
+    });
+
+    let geometry = new THREE.SphereGeometry(50, 100, 100);
+
+    sphere = new THREE.Mesh(geometry, material);
+
+    scene.add(sphere);
+  };
+
+  let init = function () {
+    // create the scene
+    scene = new THREE.Scene();
+    const near = 5;
+    const far = 55;
+    const color = 'lightblue';
+    scene.fog = new THREE.Fog(color, near, far);
+    scene.background = new THREE.Color(color);
+    const light = new THREE.DirectionalLight("white", 1);
+    light.castShadow = true;
+    light.position.set(-5, 6, 10);
+    scene.add(light);
+
+    // create an locate the camera
+    camera = new THREE.PerspectiveCamera(
+      70,
+      window.innerWidth / window.innerHeight,
+      1,
+      1000
+    );
+    camera.position.set(-5, 6, 0);
+    //target = new THREE.Object3D();
+
+    const loader = new OBJLoader();
+
+    // load a resource
+    loader.load(
+      // resource URL
+      "img/model/Female/poses/OBJ/Female_Standing.obj",
+      // called when resource is loaded
+      function (object) {
+        object.scale.set(10,10,10);
+        object.position.set(-3,-25,-8);
+        scene.add(object);
+      },
+      // called when loading is in progresses
+      function (xhr) {
+        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+      },
+      // called when loading has errors
+      function (error) {
+        console.log("An error happened");
+      }
+    );
+
+    createGeometry();
+    realisticReflective();
+    // create the renderer
+    renderer = new THREE.WebGLRenderer({ antialiasing: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    document.body.appendChild(renderer.domElement);
+
+    const geometry = new THREE.BoxGeometry(3, 3, 3);
+
+    const cubes = [
+      makeInstance(geometry, "skyblue", 0),
+      makeInstance(geometry, "darkseagreen", 4),
+      makeInstance(geometry, "darksalmon", 8),
+    ];
+
+    const textured_geo = new THREE.SphereGeometry(2, 20, 20);
+
+    const spheres = [
+      makeTextured(textured_geo, "img/pic10.jpg", -6),
+      makeTextured(textured_geo, "img/pic20.jpg", -10),
+      makeTextured(textured_geo, "img/pic21.jpg", -14),
+    ];
+
+    // controls
+
+    controls = new OrbitControls(camera, renderer.domElement);
+    controls.listenToKeyEvents(window); // optional
+
+    //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
+
+    controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+    controls.dampingFactor = 0.05;
+
+    //controls.autoRotate = true;
+
+    controls.screenSpacePanning = false;
+  };
+
+  // main animation loop - calls 50-60 times per second.
+  let mainLoop = function () {
+    // target.position.x = 10 * Math.sin(theta);
+    // target.position.z = 10 * Math.cos(theta);
+    // theta += ADD;
+    //camera.lookAt(target.position);
+
+    renderer.render(scene, camera);
+    //sphereCamera.updateCubeMap( renderer, scene );
+    controls.update();
+    requestAnimationFrame(mainLoop);
+  };
+
+  ///////////////////////////////////////////////
+  init();
+  mainLoop();
+</script>
