@@ -14,10 +14,9 @@
         <h1>How to Play?!</h1>
         <p>
           Click the similar color of object to increase the score. Each failure
-          decrease the score. And don't click the floor otherwise the game would be frozen and should be reloaded to restart.
-          Good luck for the game! Press Enter to start playing!
+          decrease the score. Press Enter to Start.
         </p>
-        <p><b>Tsania Az Zahra_05111940000032_GrafkomD</b></p>
+        <p><b>Tsania Az Zahra<br>05111940000032<br>GrafkomD</b></p>
       </div>
     </div>
     <script>
@@ -40,8 +39,7 @@
         const baseSpeed = 2500;
         if (scene.children.length <= 50) {
           speed = baseSpeed;
-
-          currentScore = 0;
+          createGeometry();
           elementScore.innerHTML = currentScore;
         } else {
           speed -= 150;
@@ -233,9 +231,10 @@
       window.addEventListener("keypress", function (e) {
         if (e.key == "Enter") {
           clearBox("rule");
-          countdown();
+          
           init();
           mainLoop();
+          countdown();
         }
       });
 
