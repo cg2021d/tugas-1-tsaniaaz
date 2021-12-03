@@ -7,8 +7,6 @@
 <body style="margin: 0"></body>
 
 </html>
-
-<div id="ThreeJS" style="position: absolute; left:0px; top:0px"></div>
 <script type="module">
   import * as THREE from "https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js";
   import { OrbitControls } from "https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js";
@@ -64,16 +62,31 @@
   let init = function () {
     // create the scene
     scene = new THREE.Scene();
-    const near = 5;
-    const far = 55;
+    const near = 35;
+    const far = 100;
     const color = 'lightblue';
     scene.fog = new THREE.Fog(color, near, far);
     scene.background = new THREE.Color(color);
     const light = new THREE.DirectionalLight("white", 1);
     light.castShadow = true;
-    light.position.set(-5, 6, 10);
+    light.position.set(20, 30, 10);
     scene.add(light);
 
+    const floorMaterial = new THREE.MeshPhongMaterial({
+      side: THREE.DoubleSide,
+      map: new THREE.TextureLoader().load("./img/jalan.jpg"),
+    });
+    
+  
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(50, 50, 100, 100),
+      floorMaterial
+    );
+    floor.receiveShadow = true;
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.set(0,-20,0);
+    scene.add(floor);
+  
     // create an locate the camera
     camera = new THREE.PerspectiveCamera(
       70,
@@ -97,8 +110,9 @@
       arr[i],
       // called when resource is loaded
       function (object) {
+        object.castShadow = true;
         object.scale.set(0.1, 0.1, 0.1);
-        object.position.set(i*20, -25, -25);
+        object.position.set(i*30, -25, i*30-30);
         scene.add(object);
       },
       // called when loading is in progresses
@@ -161,6 +175,15 @@
       makeTextured(textured_geo, "img/pic21.jpg", -14),
     ];
 
+    scene.traverse( function( child ) { 
+
+      if ( child.isMesh ) {
+  
+          child.castShadow = true;
+          child.receiveShadow = true;
+  
+      }
+    } );
     // controls
 
     controls = new OrbitControls(camera, renderer.domElement);
